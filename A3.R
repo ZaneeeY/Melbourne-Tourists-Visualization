@@ -11,7 +11,6 @@ source('tableau-in-shiny-v1.0.R')
 
 # Read files
 tour_data <- read.csv('TourSpots.csv')
-flow_data <- read.csv('TourPopularity.csv')
 
 # Set up different icons and colors for public and private hospitals
 tour_data$Icon <- 'camera'
