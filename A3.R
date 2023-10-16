@@ -8,22 +8,17 @@ library('leaflet')
 
 source('source/tableau-in-shiny-v1.0.R')
 
-## Restaurant
-# Get data
-restaurant_data <- read.csv('dataset/restaurant_dataset.csv')
-
-names(restaurant_data)[names(restaurant_data) == "google_maps_rating"] <- "Rating on Google Maps(0~5)"
-names(restaurant_data)[names(restaurant_data) == "rating"] <- "Rating on Tripadvisor(0~5)"
-names(restaurant_data)[names(restaurant_data) == "price"] <- "Price on Google Maps(1～4)"
-names(restaurant_data)[names(restaurant_data) == "food_rating"] <- "Food Rating on Google Maps(0～5)"
-
-restaurant_data$tripadvisor_link <- sprintf("window.open('%s')", restaurant_data$tripadvisor_link)
-
-# Generate variables for horizontal and vertical coordinates
-x_y_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "description", "cuisines", "mon", "tue", "wed", "thu", "fri", "sat", "sun"))
-
-split_cuisines <- unlist(strsplit(restaurant_data[["cuisines"]], ", "))
-unique_cuisines_list <- c("All", unique(split_cuisines))
+## Home
+home_tab <- tabPanel(
+  title='Home',
+  h2('h2'),
+  mainPanel(
+    actionButton("btn_tour", "Go to Tour Spots"),
+    actionButton("btn_restaurant", "Go to Restaurants"),
+    actionButton("btn_weather", "Go to Weather"),
+    uiOutput('plot_home')
+  )
+)
 
 ## Tour Spots
 tour_data <- read.csv('dataset/TourSpots.csv')
@@ -32,6 +27,18 @@ tour_data$Icon <- 'camera'
 tour_data$Color <- 'orange'
 tour_data$Icon[tour_data$Price == 0] <- 'camera'
 tour_data$Color[tour_data$Price == 0] <- 'red'
+
+tour_tab <- tabPanel(
+  title='Tour Spots',
+  splitLayout(
+    leafletOutput('map_tour', height = "800px"),
+    tableauPublicViz(
+      id='tableauViz_tour',
+      url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
+      height="1000px"
+    ),
+  )
+)
 
 # Create the tour_tab popup
 makeTourPopup <- function(row) {
@@ -60,28 +67,22 @@ makeTourPopup <- function(row) {
 # Finalize the tour_tab popup
 tour_data$Popup <- by(tour_data, seq_len(nrow(tour_data)), makeTourPopup)
 
-home_tab <- tabPanel(
-  title='Home',
-  h2('h2'),
-  mainPanel(
-    actionButton("btn_tour", "Go to Tour Spots"),
-    actionButton("btn_restaurant", "Go to Restaurants"),
-    actionButton("btn_weather", "Go to Weather"),
-    uiOutput('plot_home')
-  )
-)
+## Restaurant
+# Get data
+restaurant_data <- read.csv('dataset/restaurant_dataset.csv')
 
-tour_tab <- tabPanel(
-  title='Tour Spots',
-  splitLayout(
-    leafletOutput('map_tour', height = "800px"),
-    tableauPublicViz(
-      id='tableauViz_tour',
-      url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
-      height="1000px"
-    ),
-  )
-)
+names(restaurant_data)[names(restaurant_data) == "google_maps_rating"] <- "Rating on Google Maps(0~5)"
+names(restaurant_data)[names(restaurant_data) == "rating"] <- "Rating on Tripadvisor(0~5)"
+names(restaurant_data)[names(restaurant_data) == "price"] <- "Price on Google Maps(1～4)"
+names(restaurant_data)[names(restaurant_data) == "food_rating"] <- "Food Rating on Google Maps(0～5)"
+
+restaurant_data$tripadvisor_link <- sprintf("window.open('%s')", restaurant_data$tripadvisor_link)
+
+# Generate variables for horizontal and vertical coordinates
+x_y_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "description", "cuisines", "mon", "tue", "wed", "thu", "fri", "sat", "sun"))
+
+split_cuisines <- unlist(strsplit(restaurant_data[["cuisines"]], ", "))
+unique_cuisines_list <- c("All", unique(split_cuisines))
 
 restaurant_tab <- tabPanel(
   title='Restaurants',
@@ -111,9 +112,30 @@ restaurant_tab <- tabPanel(
   )
 )
 
+
+## Weather
+weather_data <- read.csv("dataset/weather_dataset.csv")
+
 weather_tab <- tabPanel(
   title='Weather',
-  h2('h2')
+  h2('h2'),
+  fluidPage(
+    fluidRow(
+      column(8,
+             tableauPublicViz(
+               id='tableauViz_weather',
+               url='https://public.tableau.com/views/Book1_16971162104390/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
+               height="1000px"
+             ),
+      ),
+      column(3,
+             verbatimTextOutput("weather_output")
+      )
+      
+    )
+  )
+  
+  
 )
 
 ui <- navbarPage(
@@ -176,9 +198,37 @@ server <- function(input, output, session) {
     filtered_data[, c("name", "Rating on Google Maps(0~5)", "Rating on Tripadvisor(0~5)", "tripadvisor_link", input$xcol, "cuisines")]
   })
   
+  ## Tour Spots
+  # Make tour map
+  output$map_tour <- renderLeaflet({
+    leaflet() %>%
+      addProviderTiles(providers$CartoDB.Voyager) %>%
+      addAwesomeMarkers(
+        data = tour_data,
+        lng=~Longitude, lat=~Latitude,
+        icon=~awesomeIcons(library='fa',
+                           icon=Icon,
+                           iconColor='#ffffff',
+                           markerColor=Color),
+        label=~Name,
+        popup=~Popup,
+        layerId=~Name) %>%
+      setView(lng = 145.1291, lat = -37.9648, zoom = 9.2)
+  })
+  
+  # React to clicks on the tour_tab marker
+  observeEvent(input$map_tour_marker_click, {
+    name <- input$map_tour_marker_click
+    name <- name$id
+    runjs(
+      sprintf(
+        'let viz = document.getElementById("tableauViz_tour");
+        let sheet = viz.workbook.activeSheet;
+        sheet.applyFilterAsync("Name", ["%s"], FilterUpdateType.Replace);', name))
+  })
+  
+  ## Restaurant
   output$plot_restaurant <- renderHighchart({
-    
-    
     name_var <- names(selected_restaurant_data())[1]
     google_maps_rating_var <- names(selected_restaurant_data())[2]
     rating_var <- names(selected_restaurant_data())[3]
@@ -212,33 +262,36 @@ server <- function(input, output, session) {
       )
   })
   
-  # Make tour map
-  output$map_tour <- renderLeaflet({
-    leaflet() %>%
-      addProviderTiles(providers$CartoDB.Voyager) %>%
-      addAwesomeMarkers(
-        data = tour_data,
-        lng=~Longitude, lat=~Latitude,
-        icon=~awesomeIcons(library='fa',
-                           icon=Icon,
-                           iconColor='#ffffff',
-                           markerColor=Color),
-        label=~Name,
-        popup=~Popup,
-        layerId=~Name) %>%
-      setView(lng = 145.1291, lat = -37.9648, zoom = 9.2)
+  ## Weather
+  output$weather_output <- renderPrint({
+    
+    # 如果没有选择月份，显示错误消息
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month to view the scores.")
+    )
+    
+    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    selected_data <- weather_data[weather_data$Month == name_month, ]
+    
+    # 打分
+    precipScore <- mean(ifelse(selected_data$Precipitation..mm. < 50, 10, 5))
+    tempScore <- mean(ifelse(selected_data$Mean.maximun.temperture...C. > 20 & selected_data$Mean.maximun.temperture...C. < 25, 10, 5))
+    solarScore <- mean(ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. > 15, 10, 5))
+    windScore <- mean(ifelse(selected_data$Mean.daily.wind.run..km. < 450, 10, 5))
+    
+    # 根据权重计算总分
+    totalScore <- round((precipScore * 0.3) + (tempScore * 0.4) + (solarScore * 0.2) + (windScore * 0.1), 1)
+    
+    list(
+      name_month,
+      Average_Total_Score = ifelse(!is.na(totalScore), totalScore, NA),
+      Average_Precipitation_Score = ifelse(!is.na(precipScore), round(precipScore, 1), NA),
+      Average_Temperature_Score = ifelse(!is.na(tempScore), round(tempScore, 1), NA),
+      Average_Sun_Exposure_Score = ifelse(!is.na(solarScore), round(solarScore, 1), NA),
+      Average_Wind_Speed_Score = ifelse(!is.na(windScore), round(windScore, 1), NA)
+    )
   })
   
-  # React to clicks on the tour_tab marker
-  observeEvent(input$map_tour_marker_click, {
-    name <- input$map_tour_marker_click
-    name <- name$id
-    runjs(
-      sprintf(
-        'let viz = document.getElementById("tableauViz_tour");
-        let sheet = viz.workbook.activeSheet;
-        sheet.applyFilterAsync("Name", ["%s"], FilterUpdateType.Replace);', name))
-  })
   
 }
 
