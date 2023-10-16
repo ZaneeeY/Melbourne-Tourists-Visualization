@@ -73,13 +73,31 @@ home_tab <- tabPanel(
 
 tour_tab <- tabPanel(
   title='Tour Spots',
-  splitLayout(
-    leafletOutput('map_tour', height = "800px"),
-    tableauPublicViz(
-      id='tableauViz_tour',
-      url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
-      height="1000px"
-    ),
+  fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        checkboxGroupInput("price_filter", "Price Filter", 
+                           choices = c("Free" = 0, "Non-Free" = 1)),
+        HTML(
+          "<h3>The beauty of Melbourne</h3>
+           <p>Melbourne, Australia, offers a captivating blend of country views, city walks, adventurous experiences, and the beauty of nature. Just a short drive from the bustling city center, you'll find the picturesque Yarra Valley, where rolling vineyards and lush landscapes create a stunning country escape. For those who prefer the urban vibe, Melbourne's city walks are a delight, with vibrant street art, historic architecture, and a thriving café culture that invites exploration. Adventure-seekers can embark on thrilling escapades like hot air ballooning over the Yarra Valley, or they can explore the nearby Great Ocean Road with its iconic Twelve Apostles. And when it's time to reconnect with nature, Melbourne doesn't disappoint. You can discover tranquil parks, gardens, and beaches, or venture into the nearby Dandenong Ranges for serene rainforest hikes. Melbourne truly offers something for every traveler's taste, making it a city of diverse and exciting experiences.</p>
+           <img src='https://fletchers.net.au/_files/blog/whats-on-in-melbourne.jpg' alt='Custom Image' width='300' height='180' />
+           <p></p>
+           <img src='https://www.tripsavvy.com/thmb/EMZFJmSQwhPKMYjJao-PABUjbJs=/5387x3381/filters:no_upscale():max_bytes(150000):strip_icc()/IMG_7081-2-8ca655d68c9c42cbbfda9e5896d2839a.jpg' alt='Custom Image' width='300' height='180' />
+           <p></p>
+           <img src='https://cdn.concreteplayground.com/content/uploads/2016/07/Dandenong-Ranges-Flickr-Adrian-Mohedano.jpeg' alt='Custom Image' width='300' height='180' />
+          "
+        )
+      ),
+      mainPanel(
+        leafletOutput('map_tour', height = "600"),
+        tableauPublicViz(
+          id='tableauViz_tour',
+          url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
+          height="150px"
+        )
+      )
+    )
   )
 )
 
@@ -214,10 +232,20 @@ server <- function(input, output, session) {
   
   # Make tour map
   output$map_tour <- renderLeaflet({
+    
+    filtered_tour_data <- tour_data
+    
+    if (0 %in% input$price_filter && 1 %in% input$price_filter) {
+    } else if (0 %in% input$price_filter) {
+      filtered_tour_data <- tour_data[tour_data$Price == 0, ]
+    } else if (1 %in% input$price_filter) {
+      filtered_tour_data <- tour_data[tour_data$Price > 0, ]
+    }
+    
     leaflet() %>%
       addProviderTiles(providers$CartoDB.Voyager) %>%
       addAwesomeMarkers(
-        data = tour_data,
+        data = filtered_tour_data,
         lng=~Longitude, lat=~Latitude,
         icon=~awesomeIcons(library='fa',
                            icon=Icon,
