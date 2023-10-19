@@ -65,13 +65,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
           <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv1' table='[restaurant_dataset#csv]' type='table'>
@@ -88,13 +81,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
           <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv2' table='[restaurant_dataset#csv]' type='table'>
@@ -111,13 +97,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
           <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv3' table='[restaurant_dataset#csv]' type='table'>
@@ -134,13 +113,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
         </_.fcp.ObjectModelEncapsulateLegacy.false...relation>
@@ -181,13 +153,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
           <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv1' table='[restaurant_dataset#csv]' type='table'>
@@ -204,13 +169,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
           <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv2' table='[restaurant_dataset#csv]' type='table'>
@@ -227,13 +185,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
           <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv3' table='[restaurant_dataset#csv]' type='table'>
@@ -250,13 +201,6 @@
               <column datatype='real' name='value_rating' ordinal='9' />
               <column datatype='real' name='atmosphere_rating' ordinal='10' />
               <column datatype='integer' name='number_comments' ordinal='11' />
-              <column datatype='string' name='mon' ordinal='12' />
-              <column datatype='string' name='tue' ordinal='13' />
-              <column datatype='string' name='wed' ordinal='14' />
-              <column datatype='string' name='thu' ordinal='15' />
-              <column datatype='string' name='fri' ordinal='16' />
-              <column datatype='string' name='sat' ordinal='17' />
-              <column datatype='string' name='sun' ordinal='18' />
             </columns>
           </relation>
         </_.fcp.ObjectModelEncapsulateLegacy.true...relation>
@@ -418,103 +362,12 @@
             <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>mon</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[mon]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>mon</remote-alias>
-            <ordinal>12</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>tue</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[tue]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>tue</remote-alias>
-            <ordinal>13</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>wed</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[wed]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>wed</remote-alias>
-            <ordinal>14</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>thu</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[thu]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>thu</remote-alias>
-            <ordinal>15</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>fri</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[fri]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>fri</remote-alias>
-            <ordinal>16</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>sat</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[sat]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>sat</remote-alias>
-            <ordinal>17</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>sun</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[sun]</local-name>
-            <parent-name>[restaurant_dataset.csv+]</parent-name>
-            <remote-alias>sun</remote-alias>
-            <ordinal>18</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RUS' />
-            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[restaurant_dataset.csv_7D6D32262FDF4A9AA0BD960C09505446]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
-          </metadata-record>
-          <metadata-record class='column'>
             <remote-name>Table Name</remote-name>
             <remote-type>129</remote-type>
             <local-name>[Table Name]</local-name>
             <parent-name>[restaurant_dataset.csv+]</parent-name>
             <remote-alias>Table Name</remote-alias>
-            <ordinal>19</ordinal>
+            <ordinal>12</ordinal>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
             <contains-null>true</contains-null>
@@ -544,21 +397,14 @@
       <column caption='Cuisines' datatype='string' name='[cuisines]' role='dimension' type='nominal' />
       <column caption='Description' datatype='string' name='[description]' role='dimension' type='nominal' />
       <column caption='Food Rating' datatype='real' name='[food_rating]' role='measure' type='quantitative' />
-      <column caption='Fri' datatype='string' name='[fri]' role='dimension' type='nominal' />
       <column caption='Google Maps Rating' datatype='real' name='[google_maps_rating]' role='measure' type='quantitative' />
-      <column caption='Mon' datatype='string' name='[mon]' role='dimension' type='nominal' />
       <column caption='Name' datatype='string' name='[name]' role='dimension' type='nominal' />
       <column caption='Number Comments' datatype='integer' name='[number_comments]' role='measure' type='quantitative' />
       <column caption='Price' datatype='integer' name='[price]' role='measure' type='quantitative' />
       <column caption='Rating' datatype='real' name='[rating]' role='measure' type='quantitative' />
-      <column caption='Sat' datatype='string' name='[sat]' role='dimension' type='nominal' />
       <column caption='Service Rating' datatype='real' name='[service_rating]' role='measure' type='quantitative' />
-      <column caption='Sun' datatype='string' name='[sun]' role='dimension' type='nominal' />
-      <column caption='Thu' datatype='string' name='[thu]' role='dimension' type='nominal' />
       <column caption='Tripadvisor Link' datatype='string' name='[tripadvisor_link]' role='dimension' type='nominal' />
-      <column caption='Tue' datatype='string' name='[tue]' role='dimension' type='nominal' />
       <column caption='Value Rating' datatype='real' name='[value_rating]' role='measure' type='quantitative' />
-      <column caption='Wed' datatype='string' name='[wed]' role='dimension' type='nominal' />
       <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
@@ -604,13 +450,6 @@
                     <column datatype='real' name='value_rating' ordinal='9' />
                     <column datatype='real' name='atmosphere_rating' ordinal='10' />
                     <column datatype='integer' name='number_comments' ordinal='11' />
-                    <column datatype='string' name='mon' ordinal='12' />
-                    <column datatype='string' name='tue' ordinal='13' />
-                    <column datatype='string' name='wed' ordinal='14' />
-                    <column datatype='string' name='thu' ordinal='15' />
-                    <column datatype='string' name='fri' ordinal='16' />
-                    <column datatype='string' name='sat' ordinal='17' />
-                    <column datatype='string' name='sun' ordinal='18' />
                   </columns>
                 </relation>
                 <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv1' table='[restaurant_dataset#csv]' type='table'>
@@ -627,13 +466,6 @@
                     <column datatype='real' name='value_rating' ordinal='9' />
                     <column datatype='real' name='atmosphere_rating' ordinal='10' />
                     <column datatype='integer' name='number_comments' ordinal='11' />
-                    <column datatype='string' name='mon' ordinal='12' />
-                    <column datatype='string' name='tue' ordinal='13' />
-                    <column datatype='string' name='wed' ordinal='14' />
-                    <column datatype='string' name='thu' ordinal='15' />
-                    <column datatype='string' name='fri' ordinal='16' />
-                    <column datatype='string' name='sat' ordinal='17' />
-                    <column datatype='string' name='sun' ordinal='18' />
                   </columns>
                 </relation>
                 <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv2' table='[restaurant_dataset#csv]' type='table'>
@@ -650,13 +482,6 @@
                     <column datatype='real' name='value_rating' ordinal='9' />
                     <column datatype='real' name='atmosphere_rating' ordinal='10' />
                     <column datatype='integer' name='number_comments' ordinal='11' />
-                    <column datatype='string' name='mon' ordinal='12' />
-                    <column datatype='string' name='tue' ordinal='13' />
-                    <column datatype='string' name='wed' ordinal='14' />
-                    <column datatype='string' name='thu' ordinal='15' />
-                    <column datatype='string' name='fri' ordinal='16' />
-                    <column datatype='string' name='sat' ordinal='17' />
-                    <column datatype='string' name='sun' ordinal='18' />
                   </columns>
                 </relation>
                 <relation connection='textscan.10c0gww1mjv6tw145rlln0s3xnsp' name='restaurant_dataset.csv3' table='[restaurant_dataset#csv]' type='table'>
@@ -673,13 +498,6 @@
                     <column datatype='real' name='value_rating' ordinal='9' />
                     <column datatype='real' name='atmosphere_rating' ordinal='10' />
                     <column datatype='integer' name='number_comments' ordinal='11' />
-                    <column datatype='string' name='mon' ordinal='12' />
-                    <column datatype='string' name='tue' ordinal='13' />
-                    <column datatype='string' name='wed' ordinal='14' />
-                    <column datatype='string' name='thu' ordinal='15' />
-                    <column datatype='string' name='fri' ordinal='16' />
-                    <column datatype='string' name='sat' ordinal='17' />
-                    <column datatype='string' name='sun' ordinal='18' />
                   </columns>
                 </relation>
               </relation>
@@ -690,7 +508,7 @@
     </datasource>
   </datasources>
   <worksheets>
-    <worksheet name='Sheet 1'>
+    <worksheet name='word cloud'>
       <table>
         <view>
           <datasources>
@@ -746,7 +564,7 @@
     </worksheet>
   </worksheets>
   <windows source-height='30'>
-    <window class='worksheet' maximized='true' name='Sheet 1'>
+    <window class='worksheet' maximized='true' name='word cloud'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -776,7 +594,7 @@
     </window>
   </windows>
   <thumbnails>
-    <thumbnail height='384' name='Sheet 1' width='384'>
+    <thumbnail height='384' name='word cloud' width='384'>
       iVBORw0KGgoAAAANSUhEUgAAAYAAAAGACAYAAACkx7W/AAAACXBIWXMAAA7DAAAOwwHHb6hk
       AAAgAElEQVR4nOzdd3hc133g/e+90zsGvVeisPciiupWsSRX2Y4d23HixNmsk/Wus5vdJPvm
       jeM462zs13aKk7hsrE1cJNuKLUtWsURJpEiCvYIkQIDovU9vt7x/DABiMINCElSb8/HjRw9n

@@ -71,47 +71,87 @@ tour_data$Popup <- by(tour_data, seq_len(nrow(tour_data)), makeTourPopup)
 # Get data
 restaurant_data <- read.csv('dataset/restaurant_dataset.csv')
 
-names(restaurant_data)[names(restaurant_data) == "google_maps_rating"] <- "Rating on Google Maps(0~5)"
-names(restaurant_data)[names(restaurant_data) == "rating"] <- "Rating on Tripadvisor(0~5)"
-names(restaurant_data)[names(restaurant_data) == "price"] <- "Price on Google Maps(1～4)"
-names(restaurant_data)[names(restaurant_data) == "food_rating"] <- "Food Rating on Google Maps(0～5)"
+names(restaurant_data)[names(restaurant_data) == "google_maps_rating"] <- "Rating on Google Maps (0~5)"
+names(restaurant_data)[names(restaurant_data) == "rating"] <- "Rating on Tripadvisor (0~5)"
+names(restaurant_data)[names(restaurant_data) == "price"] <- "Price on Google Maps (0~4)"
+names(restaurant_data)[names(restaurant_data) == "food_rating"] <- "Food Rating on Tripadvisor (0~5)"
+names(restaurant_data)[names(restaurant_data) == "service_rating"] <- "Service Rating on Tripadvisor (0~5)"
+names(restaurant_data)[names(restaurant_data) == "value_rating"] <- "Value Rating on Tripadvisor (0~5)"
+names(restaurant_data)[names(restaurant_data) == "atmosphere_rating"] <- "Atmosphere Rating on Tripadvisor (0~5)"
+names(restaurant_data)[names(restaurant_data) == "number_comments"] <- "Number of Comments"
 
 restaurant_data$tripadvisor_link <- sprintf("window.open('%s')", restaurant_data$tripadvisor_link)
 
 # Generate variables for horizontal and vertical coordinates
-x_y_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "description", "cuisines", "mon", "tue", "wed", "thu", "fri", "sat", "sun"))
+x_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "description", "cuisines", "mon", "tue", "wed", "thu", "fri", "sat", "sun"))
 
 split_cuisines <- unlist(strsplit(restaurant_data[["cuisines"]], ", "))
-unique_cuisines_list <- c("All", unique(split_cuisines))
+unique_cuisines_list <- c(unique(split_cuisines))
 
 restaurant_tab <- tabPanel(
   title='Restaurants',
-  h2('h2'),
+  h2(style = "display: flex; justify-content: center;", 'Restaurants in Melbourne'),
   fluidPage(
     fluidRow(
-      column(3,
-             tableauPublicViz(
-               id = 'tableauViz_restaurant',
-               url = 'https://public.tableau.com/views/restaurant_word_cloud/Sheet1?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link',
-               height = '300px'
-             ),
+      style = "margin-left: 10%; margin-right: 10%;",
+      p("Melbourne, the cultural heart of Australia, serves as a canvas where global cuisines paint a vivid picture of its diverse heritage. Ensconced in its labyrinthine lanes and bustling streets are eateries that offer a culinary passport to the world. To guide your palate on this epicurean adventure, we've handpicked 35 standout restaurants from TripAdvisor, each echoing the nuances of distinct cuisines from around the globe. From the rustic charm of traditional dishes to avant-garde interpretations of classics, this visualization captures the essence of Melbourne's gastronomic grandeur. Embark on this curated journey and experience a taste of the city's most revered dining establishments.")
+    ),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
+      column(5,
+        style = "height: 600px; width: 800px; margin-top: 35px;",
+        tableauPublicViz(
+          id = 'tableauViz_restaurant',
+          url = 'https://public.tableau.com/views/restaurant_word_cloud/Sheet1?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link',
+          height = '100%'
+        )
       ),
+      column(5,
+             h3("Word Cloud of Cuisine"),
+             p("The word cloud for Melbourne cuisine gives you an idea of the type of cuisine being recommended. Each term, representing a distinct cuisine, is sized based on the number of restaurants that embrace its flavors. By clicking on a cuisine, the layered maps behind come alive, focusing solely on your selection. The bar map will highlight the chosen cuisine, the radar map will streamline its display, and the tree map will present restaurants that champion that specific types of cuisines. ")
+      )
+    ),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%; margin-top: 18px; ",
+      h3("Google Maps Ratings vs. Tripadvisor Ratings"),
+      p("Explore how Melbourne's diverse eateries fare in the eyes of discerning diners from both Google Maps and TripAdvisor. This bar chart provides a comprehensive view, breaking down average ratings by cuisine. Simply hover over each bar to glean specific rating details. If you want to know the ratings of your favorite cuisine, then you can click on the cuisine in the word cloud, after which the chart will highlight that particular dish, making it easy for you to identify it. Navigate this interactive tool and discover how Melbourne's culinary offerings stack up in the world of online reviews.")
+    ),
+    fluidRow(
+      style = "margin-top: 20px; width: 100%;  display: flex; justify-content: center;",
+      mainPanel(
+        highchartOutput("bar_chart_ratings")
+      )
+    ),
+    
+    fluidRow(
+      style = "margin-left: 10%;  margin-top: 18px; ",
+      column(5,
+        h3("Sub-ratings on Tripadvisor"),
+        p("While overall ratings provide a snapshot, the nuances of a dining experience are captured in the sub-ratings. This radar chart intricately maps out TripAdvisor's sub-ratings—Food, Atmosphere, Service, and Value—for various cuisines. To declutter the visual and concentrate on what truly matters to you, utilize the interactive legend. By clicking on a cuisine, you can toggle its visibility on the chart. Moreover, selecting a cuisine from the word cloud narrows down the radar chart to that specific cuisine. Navigate this multifaceted tool and let it guide your next culinary adventure in Melbourne, tailored to your preferences.")
+      ),
+      column(7,
+         style = "margin-top: 20px;",
+         mainPanel(
+           highchartOutput("radar_chart_restaurant")
+         )
+      )
+    ),
+    fluidRow(
+      style = "margin-left: 10%;  margin-right: 10%; margin-top: 18px; ",
+      h3("Comparison between Restaurants"),
+      p("Dive into the intricacies of Melbourne's restaurant ratings with our versatile treemap. This visualization offers a panoramic view, dissecting ratings based on diverse variables—from overall feedback on TripAdvisor to pricing on Google Maps. Customize your exploration by selecting a specific variable from the dropdown, as depicted in Chart 1. Curious about how a specific cuisine fares across all its eateries? Simply choose it from the word cloud, and the treemap will recalibrate to spotlight those restaurants. For a deeper dive, click on any restaurant block to be redirected to its detailed review on TripAdvisor. Use this comprehensive tool to chart your next dining experience in Melbourne, tailored to your tastes and interests.")
+    ),
+    fluidRow(
+      style = "margin-left: 9%;  margin-top: 18px; margin-top: 20px;",
       column(3,
-             h3("Configuration", style = "font-weight: bold;"),
-             # Allow the user to customize the horizontal and vertical coordinates according  to the information they want to get.
-             # Among the values that can be used as coordinates are release year, runtime, IMDb rating, Meta score, number of votes and box office.
-             # Kmeans example: https://shiny.posit.co/r/gallery/start-simple/kmeans-example/
-             selectInput("xcol", "X-axis variable", x_y_vars),
-             selectInput('selectedCuisine', 'Cuisines', unique_cuisines_list, selected="All", selectize=TRUE)
-             
+             selectInput("xcol", "Variable", x_vars)
       ),
       mainPanel(
-        highchartOutput('plot_restaurant')
+        highchartOutput("plot_tree_map_restaurant")
       )
     )
   )
 )
-
 
 ## Weather
 weather_data <- read.csv("dataset/weather_dataset.csv")
@@ -124,18 +164,21 @@ weather_tab <- tabPanel(
       column(8,
              tableauPublicViz(
                id='tableauViz_weather',
-               url='https://public.tableau.com/views/Book1_16971162104390/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
+               url='https://public.tableau.com/views/Book1_16971162104390/asd?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
                height="1000px"
              ),
       ),
       column(3,
-             verbatimTextOutput("weather_output")
+             verbatimTextOutput("weather_output"),
+             tags$br(),
+             textOutput("precipAdvice"),
+             textOutput("tempAdvice"),
+             textOutput("solarAdvice"),
+             textOutput("windAdvice")
       )
       
     )
   )
-  
-  
 )
 
 ui <- navbarPage(
@@ -145,13 +188,7 @@ ui <- navbarPage(
   home_tab,
   tour_tab,
   restaurant_tab,
-  weather_tab,
-  tags$style(
-    HTML(".leaflet-popup-content {
-            max-height: 300px;
-            overflow-y: auto;
-          }")
-  )
+  weather_tab
 )
 
 ################
@@ -172,30 +209,6 @@ server <- function(input, output, session) {
   
   output$plot_home <- renderUI({
     
-  })
-  
-  selected_restaurant_data <- reactive({
-    filtered_data <- restaurant_data[
-      
-    ]
-    
-    # If a specific cuisine is chosen, filter the rows accordingly
-    #if (!is.null(input$selectedCuisine)) {
-     # if(input$selectedCuisine == "All"){
-      #  filtered_data <- restaurant_data
-      #}else{
-       # filtered_data <- filtered_data[grepl(input$selectedCuisine, filtered_data$cuisines), ]
-      #}
-    #}
-    # If a specific cuisine is chosen in the tableau, filter the rows accordingly
-    if (!is.null(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1])) {
-      filtered_data <- filtered_data[grepl(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1], filtered_data$cuisines), ]
-    }else{
-      filtered_data <- restaurant_data
-    }
-    
-    # filter relevant columns
-    filtered_data[, c("name", "Rating on Google Maps(0~5)", "Rating on Tripadvisor(0~5)", "tripadvisor_link", input$xcol, "cuisines")]
   })
   
   ## Tour Spots
@@ -228,16 +241,147 @@ server <- function(input, output, session) {
   })
   
   ## Restaurant
-  output$plot_restaurant <- renderHighchart({
+  selected_restaurant_data <- reactive({
+    filtered_data <- restaurant_data[]
+    # Filter the rows if a specific cuisine is selected in the tableau.
+    if (!is.null(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1])) {
+      filtered_data <- filtered_data[grepl(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1], filtered_data$cuisines), ]
+    }else{
+      filtered_data <- restaurant_data
+    }
+    
+    # filter relevant columns
+    filtered_data[, c("name", "Rating on Google Maps (0~5)", "Rating on Tripadvisor (0~5)", "tripadvisor_link", input$xcol, "cuisines", "Food Rating on Tripadvisor (0~5)", "Service Rating on Tripadvisor (0~5)", "Value Rating on Tripadvisor (0~5)", "Atmosphere Rating on Tripadvisor (0~5)")]
+  })
+  
+  output$bar_chart_ratings <- renderHighchart({
+    # Create a blank data frame at startup to store results.
+    avg_ratings <- data.frame()
+    
+    google_maps_rating_var <- "Rating on Google Maps (0~5)"
+    rating_var <- "Rating on Tripadvisor (0~5)"
+    
+    
+    # Calculate average ratings for every unique cuisine
+    for (cuisine in unique_cuisines_list) {
+      filtered_data <- restaurant_data[grepl(paste0("\\b", cuisine, "\\b"), restaurant_data$cuisines), ]
+      avg_google <- round(mean(filtered_data[[google_maps_rating_var]], na.rm = TRUE), 1)
+      avg_tripadvisor <- round(mean(filtered_data[[rating_var]], na.rm = TRUE), 1)
+      
+      avg_ratings <- rbind(avg_ratings, 
+                           data.frame(cuisines = cuisine, 
+                                      GoogleMapsRating = avg_google, 
+                                      TripAdvisorRating = avg_tripadvisor))
+    }
+    
+    specific_cuisine <- input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1]
+
+    # If specific_cuisine is not NULL, then set up the highlighted series
+    if (!is.null(specific_cuisine)) {
+        highlight_mask <- avg_ratings$cuisines %in% specific_cuisine
+        
+        highlighted_google_rating <- ifelse(highlight_mask, avg_ratings$GoogleMapsRating, NA)
+        highlighted_trip_rating <- ifelse(highlight_mask, avg_ratings$TripAdvisorRating, NA)
+    } else {
+        highlight_mask <- avg_ratings$cuisines %in% " "
+        # If specific_cuisine is NULL, then no bars should be highlighted
+        highlighted_google_rating <- rep(NA, length(avg_ratings$GoogleMapsRating))
+        highlighted_trip_rating <- rep(NA, length(avg_ratings$TripAdvisorRating))
+    }
+    
+    hc <- highchart() %>%
+      hc_chart(type = "column") %>%
+      hc_title(text = "Average Ratings by Cuisine") %>%
+      hc_xAxis(categories = avg_ratings$cuisines) %>%
+      hc_yAxis(title = list(text = "Average Rating")) %>%
+      hc_add_series(name = "Google Maps Rating", 
+                    data = ifelse(!highlight_mask, avg_ratings$GoogleMapsRating, NA),
+                    color = "#7fc97f") %>%
+      hc_add_series(name = "Tripadvisor Rating", 
+                    data = ifelse(!highlight_mask, avg_ratings$TripAdvisorRating, NA),
+                    color = "#beaed4") %>%
+      # Series for the highlighted bars
+      hc_add_series(name = "Google Maps Rating Selected", 
+                  data = highlighted_google_rating,
+                  color = "#fdc086",
+                  borderColor = "#386cb0",
+                  borderWidth = 2) %>%
+      hc_add_series(name = "Tripadvisor Rating Selected", 
+                    data = highlighted_trip_rating,
+                    color = "#ffff99",
+                    borderColor = "#386cb0",
+                    borderWidth = 2) %>%
+      
+      hc_plotOptions(column = list(
+        dataLabels = list(enabled = TRUE)
+      ))
+    
+    
+    return(hc)
+
+  })
+  
+  output$radar_chart_restaurant <- renderHighchart({
+    food_rating_var <- names(selected_restaurant_data())[7]
+    service_rating_var <- names(selected_restaurant_data())[8]
+    value_rating_var <- names(selected_restaurant_data())[9]
+    atmosphere_rating_var <- names(selected_restaurant_data())[10]
+    
+    # Preparing data
+    compute_cuisine_means <- function(cuisine) {
+      filtered_data <- subset(selected_restaurant_data(), grepl(cuisine, cuisines))
+      
+      c(
+        round(mean(filtered_data[[food_rating_var]], na.rm = TRUE), 1),
+        round(mean(filtered_data[[service_rating_var]], na.rm = TRUE), 1),
+        round(mean(filtered_data[[value_rating_var]], na.rm = TRUE), 1),
+        round(mean(filtered_data[[atmosphere_rating_var]], na.rm = TRUE), 1)
+      )
+    }
+    
+    if (!is.null(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1])) {
+      radar_data <- lapply(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1], compute_cuisine_means)
+    } else {
+      radar_data <- lapply(unique_cuisines_list, compute_cuisine_means)
+    }
+    
+    radar_data <- do.call(rbind, radar_data)
+    colnames(radar_data) <- c(food_rating_var, service_rating_var, value_rating_var, atmosphere_rating_var)
+    
+    # Radar Chart
+    hc <- highchart() %>%
+      hc_chart(polar = TRUE, type = "line") %>%
+      hc_title(text = "Sub-ratings on Tripadvisor for Different Cuisines") %>%
+      hc_xAxis(categories = colnames(radar_data), tickmarkPlacement = 'on', lineWidth = 0) %>%
+      hc_yAxis(gridLineInterpolation = 'polygon', lineWidth = 0, min = 0, max = 5) %>%
+      hc_legend(y = 20)  %>%
+      hc_plotOptions(series = list(marker = list(symbol = 'circle'))) %>%
+      hc_add_series_list(
+        lapply(1:nrow(radar_data), function(i) {
+          series_name <- if (!is.null(input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1])) {
+            input$tableauViz_restaurant_mark_selection_changed$all_splited_cuisines[1]
+          } else {
+            unique_cuisines_list[i]
+          }
+          
+          list(
+            name = series_name,
+            data = as.numeric(radar_data[i, ]),
+            pointPlacement = 'on'
+          )
+        })
+      )
+    
+    return(hc)
+  })
+  
+  output$plot_tree_map_restaurant <- renderHighchart({
     name_var <- names(selected_restaurant_data())[1]
     google_maps_rating_var <- names(selected_restaurant_data())[2]
-    rating_var <- names(selected_restaurant_data())[3]
     tripadvisor_link_var <- names(selected_restaurant_data())[4]
     x_var <- names(selected_restaurant_data())[5]
     cuisines_var <- names(selected_restaurant_data())[6]
     
-    # Prepare the links in a format that's executable by JavaScript
-    #selected_restaurant_data()[[tripadvisor_link_var]] <- sprintf("window.open('%s')", selected_restaurant_data()[[tripadvisor_link_var]])
     hchart(selected_restaurant_data(), "treemap", hcaes(
       name = !!sym(name_var), 
       value = !!sym(x_var), 
@@ -264,8 +408,7 @@ server <- function(input, output, session) {
   
   ## Weather
   output$weather_output <- renderPrint({
-    
-    # 如果没有选择月份，显示错误消息
+    # If no month is selected, an error message is displayed
     validate(
       need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month to view the scores.")
     )
@@ -273,13 +416,33 @@ server <- function(input, output, session) {
     name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
     selected_data <- weather_data[weather_data$Month == name_month, ]
     
-    # 打分
-    precipScore <- mean(ifelse(selected_data$Precipitation..mm. < 50, 10, 5))
-    tempScore <- mean(ifelse(selected_data$Mean.maximun.temperture...C. > 20 & selected_data$Mean.maximun.temperture...C. < 25, 10, 5))
-    solarScore <- mean(ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. > 15, 10, 5))
-    windScore <- mean(ifelse(selected_data$Mean.daily.wind.run..km. < 450, 10, 5))
+    # Precipitation Score
+    precipScore <- mean(ifelse(selected_data$Precipitation..mm. < 10, 10,
+                               ifelse(selected_data$Precipitation..mm. >= 10 & selected_data$Precipitation..mm. < 50, 8,
+                                      ifelse(selected_data$Precipitation..mm. >= 50 & selected_data$Precipitation..mm. < 100, 6, 4))))
     
-    # 根据权重计算总分
+    # Temperature Score considering both Max and Min temperature
+    maxTempScore <- mean(ifelse(selected_data$Mean.maximun.temperture...C. > 20 & selected_data$Mean.maximun.temperture...C. <= 25, 10,
+                                ifelse(selected_data$Mean.maximun.temperture...C. > 25 & selected_data$Mean.maximun.temperture...C. <= 30, 8,
+                                       ifelse(selected_data$Mean.maximun.temperture...C. > 30 & selected_data$Mean.maximun.temperture...C. <= 35, 6, 4))))
+    
+    minTempScore <- mean(ifelse(selected_data$Mean.minimum.temperture...C. > 15 & selected_data$Mean.minimum.temperture...C. <= 20, 10,
+                                ifelse(selected_data$Mean.minimum.temperture...C. > 10 & selected_data$Mean.minimum.temperture...C. <= 15, 8,
+                                       ifelse(selected_data$Mean.minimum.temperture...C. > 5 & selected_data$Mean.minimum.temperture...C. <= 10, 6, 4))))
+    
+    tempScore <- (maxTempScore + minTempScore) / 2
+    
+    # Sun Exposure Score
+    solarScore <- mean(ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. >= 20, 10,
+                              ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. >= 15 & selected_data$Mean.daily.solar.exposure..MJ..m.m.. < 20, 8,
+                                     ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. >= 10 & selected_data$Mean.daily.solar.exposure..MJ..m.m.. < 15, 6, 4))))
+    
+    # Wind Score
+    windScore <- mean(ifelse(selected_data$Mean.daily.wind.run..km. < 400, 10,
+                             ifelse(selected_data$Mean.daily.wind.run..km. >= 400 & selected_data$Mean.daily.wind.run..km. < 450, 8,
+                                    ifelse(selected_data$Mean.daily.wind.run..km. >= 450 & selected_data$Mean.daily.wind.run..km. < 500, 6, 4))))
+    
+    # Compute total score with weights
     totalScore <- round((precipScore * 0.3) + (tempScore * 0.4) + (solarScore * 0.2) + (windScore * 0.1), 1)
     
     list(
@@ -290,6 +453,95 @@ server <- function(input, output, session) {
       Average_Sun_Exposure_Score = ifelse(!is.na(solarScore), round(solarScore, 1), NA),
       Average_Wind_Speed_Score = ifelse(!is.na(windScore), round(windScore, 1), NA)
     )
+  })
+  
+  # Precipitation Advice
+  output$precipAdvice <- renderText({
+    # If no month is selected, an error message is displayed
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "")
+    )
+    
+    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    precipScore <- mean(ifelse(weather_data[weather_data$Month == name_month, ]$Precipitation..mm. < 10, 10,
+                               ifelse(weather_data[weather_data$Month == name_month, ]$Precipitation..mm. >= 10 & weather_data[weather_data$Month == name_month, ]$Precipitation..mm. < 50, 8,
+                                      ifelse(weather_data[weather_data$Month == name_month, ]$Precipitation..mm. >= 50 & weather_data[weather_data$Month == name_month, ]$Precipitation..mm. < 100, 6, 4))))
+    if (precipScore > 8) {
+      return("🌈 Low precipitation, good for traveling!")
+    } else if (precipScore >= 7 && precipScore <= 8) {
+      return("☁️ Light rain, carry an umbrella!")
+    } else {
+      return("🌧️ Heavy rain, bring rain gear!")
+    }
+  })
+  
+  # Temperature Advice
+  output$tempAdvice <- renderText({
+    # If no month is selected, an error message is displayed
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "")
+    )
+    
+    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    maxTemp <- mean(weather_data[weather_data$Month == name_month, ]$Mean.maximun.temperture...C.)
+    minTemp <- mean(weather_data[weather_data$Month == name_month, ]$Mean.minimum.temperture...C.)
+    
+    if (maxTemp > 30) {
+      return("🔥 Hot, dress cool!")
+    } else if (maxTemp > 25 && maxTemp <= 30) {
+      return("🍂 Mildly warm, dress appropriately!")
+    } else if (minTemp < 10) {
+      return("❄️ Cold, dress warmly!")
+    } else if (minTemp >= 10 && minTemp <= 15) {
+      return("🌾 Mildly cold, dress appropriately!")
+    } else {
+      return("🌡️ Comfortable temperature!")
+    }
+  })
+  
+  
+  # Sun Exposure Advice
+  output$solarAdvice <- renderText({
+    # If no month is selected, an error message is displayed
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "")
+    )
+    
+    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    solarScore <- mean(ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.solar.exposure..MJ..m.m.. >= 20, 10,
+                              ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.solar.exposure..MJ..m.m.. >= 15 & weather_data[weather_data$Month == name_month, ]$Mean.daily.solar.exposure..MJ..m.m.. < 20, 8,
+                                     ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.solar.exposure..MJ..m.m.. >= 10 & weather_data[weather_data$Month == name_month, ]$Mean.daily.solar.exposure..MJ..m.m.. < 15, 6, 4))))
+    if (solarScore > 8) {
+      return("☀️ High sun exposure, bring sunglasses!")
+    } else if (solarScore >= 7 && solarScore <= 8) {
+      return("⛅ Moderate sun, perfect for outdoor activities!")
+    } else {
+      return("☁️ Low sun exposure, might be cloudy!")
+    }
+  })
+  
+  # Wind Advice
+  output$windAdvice <- renderText({
+    # If no month is selected, an error message is displayed
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "")
+    )
+    
+    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    windScore <- mean(ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.wind.run..km. < 400, 10,
+                             ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.wind.run..km. >= 400 & weather_data[weather_data$Month == name_month, ]$Mean.daily.wind.run..km. < 450, 8,
+                                    ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.wind.run..km. >= 450 & weather_data[weather_data$Month == name_month, ]$Mean.daily.wind.run..km. < 500, 6, 4))))
+    if (windScore > 8) {
+      return("🍃 Light breeze!")
+    } else if (windScore >= 7 && windScore <= 8) {
+      return("🌬️ Moderate wind, might be windy!")
+    } else {
+      return("💨 Strong wind, be cautious!")
+    }
   })
   
   
