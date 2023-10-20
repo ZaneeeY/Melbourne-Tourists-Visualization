@@ -98,27 +98,34 @@ tour_tab <- tabPanel(
       style = "margin-left: 10%; margin-right: 10%;",
       h3("Tour Spots Location and Popularity")
     ),
-    div(style = "margin-left: 10%; margin-right: 10%;",
-      sidebarLayout(
-        
-        sidebarPanel(
-          radioButtons("price_filter", "Price Filter", 
-                             choices = c("All" = 2, "Free" = 0, "Non-Free" = 1),
-                             selected = 2),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
           HTML(
-            "<h4>Instruction of the usage</h4>
+          "<h4>Instruction of the usage</h4>
             <P>In the area below, you can explore the locations of various tourist attractions on the map by selecting different markers. By clicking on these markers, you can access an information popup that provides you with everything you need to know about that attraction. This includes the attraction's name, pricing, rating, type, and a brief description for your reference. Additionally, below this section, there is a foot traffic chart that appears based on the attraction you click on. This foot traffic chart can inform you about the attraction's visitor patterns over a week, showing the hourly visitor flow. This helps you plan your visit more efficiently. In this panel, there is also a price filter, which allows you to quickly filter attractions on the map between paid and free ones, making it easier for budget-conscious travelers to adapt to changes in their journey.</p>"
-          )
+          ),
+          radioButtons("price_filter", "Price Filter", 
+                       choices = c("All" = 2, "Free" = 0, "Non-Free" = 1),
+                       selected = 2),
         ),
-        mainPanel(
-          leafletOutput('map_tour', height = "600"),
-          tableauPublicViz(
-            id='tableauViz_tour',
-            url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link'
+        fluidRow(
+          style = "margin-left: 10%; margin-right: 10%;",
+          column(4,
+              
+                leafletOutput('map_tour', height = "600")
+          ),
+          column(8,
+                tableauPublicViz(
+                  id='tableauViz_tour',
+                  url='https://public.tableau.com/views/Book_16970122966280/Sheet1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link'
+                )
+            
           )
+          
         )
-      )
-    )
+        
+      
+    
   )
 )
 
@@ -165,7 +172,7 @@ names(restaurant_data)[names(restaurant_data) == "number_comments"] <- "Number o
 restaurant_data$tripadvisor_link <- sprintf("window.open('%s')", restaurant_data$tripadvisor_link)
 
 # Generate variables for horizontal and vertical coordinates
-x_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "description", "cuisines", "mon", "tue", "wed", "thu", "fri", "sat", "sun"))
+x_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "description", "cuisines"))
 
 split_cuisines <- unlist(strsplit(restaurant_data[["cuisines"]], ", "))
 unique_cuisines_list <- c(unique(split_cuisines))
@@ -188,7 +195,7 @@ restaurant_tab <- tabPanel(
           height = '100%'
         )
       ),
-      column(5,
+      column(4,
              h3("Word Cloud of Cuisine"),
              p("The word cloud for Melbourne cuisine gives you an idea of the type of cuisine being recommended. Each term, representing a distinct cuisine, is sized based on the number of restaurants that embrace its flavors. By clicking on a cuisine, the layered maps behind come alive, focusing solely on your selection. The bar map will highlight the chosen cuisine, the radar map will streamline its display, and the tree map will present restaurants that champion that specific types of cuisines. ")
       )
@@ -242,58 +249,117 @@ weather_tab <- tabPanel(
   title='Weather',
   h2(style = "display: flex; justify-content: center;", 'Weather in Melbourne'),
   fluidPage(
+    style = "margin-left: 10%; margin-right: 10%;",
     fluidRow(
-      style = "margin-left: 10%; margin-right: 10%;",
-      h3("qwe"),
-      p("ffff")
+     
+      p('Melbourne, located in the southeast of Australia, is the capital of Victoria State. The city is famous for its changeable weather, often described as "four seasons in one day”. Melbourne\'s weather can be very volatile, so we scored the data based on historical data from 2020 to 2022 and advised visitors to prepare a variety of clothing for possible weather changes.'),
+      h3("Title"),
+      p('Clicking on "Avg. Mean maximun tempture" or "Month" at the bottom will show you the weather scores, the higher the score the better for traveling.')
     ),
     fluidRow(
-      style = "margin-left: 10%; margin-right: 10%;",
-      column(8,
-             tableauPublicViz(
-               id='tableauViz_weather',
-               url='https://public.tableau.com/views/weather_16977783909790/Sheet12?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link',
-               height="1000px"
-             ),
+      tableauPublicViz(
+        id='tableauViz_weather',
+        url='https://public.tableau.com/views/weather_16977783909790/Sheet1?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link',
+        height="580px"
+      ),
+      tags$br()
+    ),
+    fluidRow(
+      column(3,
+             tags$br(),
+             box(title = "Average Precipitation Score", width = 12, status = "info", 
+             verbatimTextOutput("avgPrecipScore"), solidHeader = TRUE, collapsible = TRUE),
+             tags$br()
       ),
       column(3,
-             verbatimTextOutput("weather_output"),
              tags$br(),
-             textOutput("precipAdvice"),
-             textOutput("tempAdvice"),
-             textOutput("solarAdvice"),
-             textOutput("windAdvice")
+             box(title = "Average Temperature Score", width = 12, status = "warning", 
+                 verbatimTextOutput("avgTempScore"), solidHeader = TRUE, collapsible = TRUE),
+             tags$br()
+      ),
+      column(3,
+             tags$br(),
+             box(title = "Average Sun Exposure Score", width = 12, status = "success", 
+                 verbatimTextOutput("avgSolarScore"), solidHeader = TRUE, collapsible = TRUE),
+             tags$br()
+      ),
+      column(3,
+             tags$br(),
+             box(title = "Average Wind Speed Score", width = 12, status = "danger", 
+                 verbatimTextOutput("avgWindScore"), solidHeader = TRUE, collapsible = TRUE),
+             tags$br()
       )
+    ),
+    fluidRow(
+      column(3,
+             box(title = "Average Total Score", width = 12, status = "primary", 
+                 verbatimTextOutput("avgTotalScore"), solidHeader = TRUE, collapsible = TRUE),
+             tags$br()
+             ),
+      column(9,
+             box(title = "Advices", width = 36,
+                 textOutput("precipAdvice"),
+                 textOutput("tempAdvice"),
+                 textOutput("solarAdvice"),
+                 textOutput("windAdvice")
+             ),
+             tags$br()
+      ),
+    )
+    
+  )
+)
+
+## More Information
+info_tab <- tabPanel(
+  title='More Information',
+)
+
+ui <- dashboardPage(
+  dashboardHeader(title = "Melbourne Tour"),
+  dashboardSidebar(
+    sidebarMenu(
+      id = "sidebarmenu",
+      menuItem("Home", tabName = "home"),
+      menuItem("Tour Spots", tabName = "tour"),
+      menuItem("Restaurants", tabName = "restaurant"),
+      menuItem("Weather", tabName = "weather"),
+      menuItem("More Information", tabName = "info")
+    )
+  ),
+  dashboardBody(
+    tags$head(
+      setUpTableauInShiny()
+    ),
+    tabItems(
+      tabItem(tabName = "home", home_tab),
+      tabItem(tabName = "tour", tour_tab),
+      tabItem(tabName = "restaurant", restaurant_tab),
+      tabItem(tabName = "weather", weather_tab),
+      tabItem(tabName = "info", info_tab)
     )
   )
 )
 
-ui <- navbarPage(
-  header = setUpTableauInShiny(),
-  id='home_page', 
-  title='Welcome to Melbourne',
-  home_tab,
-  tour_tab,
-  restaurant_tab,
-  weather_tab
-)
 
 
 ################
 # SHINY SERVER #
 ################
 server <- function(input, output, session) {
+  
   observeEvent(input$btn_tour, {
-    updateNavbarPage(session, "home_page", selected = "Tour Spots")
+    updateTabItems(session, "sidebarmenu", selected = "tour")
   })
   
   observeEvent(input$btn_restaurant, {
-    updateNavbarPage(session, "home_page", selected = "Restaurants")
+    updateTabItems(session, "sidebarmenu", selected = "restaurant")
   })
   
   observeEvent(input$btn_weather, {
-    updateNavbarPage(session, "home_page", selected = "Weather")
+    updateTabItems(session, "sidebarmenu", selected = "weather")
   })
+  
   
   ## Tour Spots
   # Make tour map
@@ -502,14 +568,12 @@ server <- function(input, output, session) {
   })
   
   ## Weather
-  output$weather_output <- renderPrint({
-    # If no month is selected, an error message is displayed
+  output$avgTotalScore <- renderText({
     validate(
-      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month to view the scores.")
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
     )
-    
-    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
-    selected_data <- weather_data[weather_data$Month == name_month, ]
+    month_name = month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    selected_data <- weather_data[weather_data$Month == month_name, ]
     
     # Precipitation Score
     precipScore <- mean(ifelse(selected_data$Precipitation..mm. < 10, 10,
@@ -539,15 +603,63 @@ server <- function(input, output, session) {
     
     # Compute total score with weights
     totalScore <- round((precipScore * 0.3) + (tempScore * 0.4) + (solarScore * 0.2) + (windScore * 0.1), 1)
-    
-    list(
-      name_month,
-      Average_Total_Score = ifelse(!is.na(totalScore), totalScore, NA),
-      Average_Precipitation_Score = ifelse(!is.na(precipScore), round(precipScore, 1), NA),
-      Average_Temperature_Score = ifelse(!is.na(tempScore), round(tempScore, 1), NA),
-      Average_Sun_Exposure_Score = ifelse(!is.na(solarScore), round(solarScore, 1), NA),
-      Average_Wind_Speed_Score = ifelse(!is.na(windScore), round(windScore, 1), NA)
+    as.character(totalScore)
+  })
+  
+  output$avgPrecipScore <- renderText({
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
     )
+    month_name = month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    selected_data <- weather_data[weather_data$Month == month_name, ]
+    precipScore <- mean(ifelse(selected_data$Precipitation..mm. < 10, 10,
+                               ifelse(selected_data$Precipitation..mm. >= 10 & selected_data$Precipitation..mm. < 50, 8,
+                                      ifelse(selected_data$Precipitation..mm. >= 50 & selected_data$Precipitation..mm. < 100, 6, 4))))
+    as.character(round(precipScore, 1))
+  })
+  
+  output$avgTempScore <- renderText({
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
+    )
+    month_name = month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    selected_data <- weather_data[weather_data$Month == month_name, ]
+    maxTempScore <- mean(ifelse(selected_data$Mean.maximun.temperture...C. > 20 & selected_data$Mean.maximun.temperture...C. <= 25, 10,
+                                ifelse(selected_data$Mean.maximun.temperture...C. > 25 & selected_data$Mean.maximun.temperture...C. <= 30, 8,
+                                       ifelse(selected_data$Mean.maximun.temperture...C. > 30 & selected_data$Mean.maximun.temperture...C. <= 35, 6, 4))))
+    minTempScore <- mean(ifelse(selected_data$Mean.minimum.temperture...C. > 15 & selected_data$Mean.minimum.temperture...C. <= 20, 10,
+                                ifelse(selected_data$Mean.minimum.temperture...C. > 10 & selected_data$Mean.minimum.temperture...C. <= 15, 8,
+                                       ifelse(selected_data$Mean.minimum.temperture...C. > 5 & selected_data$Mean.minimum.temperture...C. <= 10, 6, 4))))
+    tempScore <- (maxTempScore + minTempScore) / 2
+    as.character(round(tempScore, 1))
+  })
+  
+  output$avgSolarScore <- renderText({
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
+    )
+    month_name = month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    selected_data <- weather_data[weather_data$Month == month_name, ]
+    solarScore <- mean(ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. >= 20, 10,
+                              ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. >= 15 & selected_data$Mean.daily.solar.exposure..MJ..m.m.. < 20, 8,
+                                     ifelse(selected_data$Mean.daily.solar.exposure..MJ..m.m.. >= 10 & selected_data$Mean.daily.solar.exposure..MJ..m.m.. < 15, 6, 4))))
+    as.character(round(solarScore, 1))
+  })
+  
+  output$avgWindScore <- renderText({
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
+    )
+    month_name = month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    selected_data <- weather_data[weather_data$Month == month_name, ]
+    windScore <- mean(ifelse(selected_data$Mean.daily.wind.run..km. < 400, 10,
+                             ifelse(selected_data$Mean.daily.wind.run..km. >= 400 & selected_data$Mean.daily.wind.run..km. < 450, 8,
+                                    ifelse(selected_data$Mean.daily.wind.run..km. >= 450 & selected_data$Mean.daily.wind.run..km. < 500, 6, 4))))
+    as.character(round(windScore, 1))
   })
   
   # Precipitation Advice
@@ -622,9 +734,8 @@ server <- function(input, output, session) {
   output$windAdvice <- renderText({
     # If no month is selected, an error message is displayed
     validate(
-      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "")
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
     )
-    
     name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
     
     windScore <- mean(ifelse(weather_data[weather_data$Month == name_month, ]$Mean.daily.wind.run..km. < 400, 10,
