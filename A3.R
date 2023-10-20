@@ -123,9 +123,6 @@ tour_tab <- tabPanel(
           )
           
         )
-        
-      
-    
   )
 )
 
@@ -297,7 +294,8 @@ weather_tab <- tabPanel(
              tags$br()
              ),
       column(9,
-             box(title = "Advices", width = 36,
+             box(title = "Tips for visiting Melbourne", width = 36,
+                 textOutput("selectedMonth"),
                  textOutput("precipAdvice"),
                  textOutput("tempAdvice"),
                  textOutput("solarAdvice"),
@@ -313,6 +311,31 @@ weather_tab <- tabPanel(
 ## More Information
 info_tab <- tabPanel(
   title='More Information',
+  fluidPage(
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%; ",
+      h2(style = "display: flex; justify-content: center;", 'More Information'),
+      h3('Source of Data'),
+      p(a(href="https://www.tripadvisor.com.au/", target="_blank", "Tripadvisor")),
+      p(a(href="https://www.google.com/maps/", target="_blank", "Google Maps")),
+      p(a(href="http://www.bom.gov.au/?ref=logo", target="_blank", "Australian Government: Bureau of Meteorology")),
+      h3('Source of Images'),
+      h4('Home Page:'),
+      p(a(href="https://images.pexels.com/photos/6998684/pexels-photo-6998684.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", target="_blank", "Tour Spot Photo")),
+      p(a(href="https://images.pexels.com/photos/1310777/pexels-photo-1310777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", target="_blank", "Food Photo")),
+      p(a(href="https://images.pexels.com/photos/1431822/pexels-photo-1431822.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", target="_blank", "Clouds Photo")),
+      h4('Tour Spots Page:'),
+      p(a(href="https://www.tripsavvy.com/thmb/EMZFJmSQwhPKMYjJao-PABUjbJs=/5387x3381/filters:no_upscale():max_bytes(150000):strip_icc()/IMG_7081-2-8ca655d68c9c42cbbfda9e5896d2839a.jpg", target="_blank", "Attraction Photo 1")),
+      p(a(href="https://fletchers.net.au/_files/blog/whats-on-in-melbourne.jpg", target="_blank", "Attraction Photo 2")),
+      p(a(href="https://cdn.concreteplayground.com/content/uploads/2016/07/Dandenong-Ranges-Flickr-Adrian-Mohedano.jpeg", target="_blank", "Attraction Photo 3")),
+      h3('Links to Charts of Tableau'),
+      p(a(href="https://public.tableau.com/views/Book_16970122966280/Sheet1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link", target="_blank", "Attraction Footfall Bar Chart")),
+      p(a(href="https://public.tableau.com/views/restaurant_word_cloud/Sheet1?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link", target="_blank", "Cuisine Word Cloud")),
+      p(a(href="https://public.tableau.com/views/weather_16977783909790/Sheet1?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link", target="_blank", "Weather Dual Axis Chart"))
+    )
+    
+  )
+  
 )
 
 ui <- dashboardPage(
@@ -662,6 +685,18 @@ server <- function(input, output, session) {
     as.character(round(windScore, 1))
   })
   
+  # Display the selected month
+  output$selectedMonth  <- renderText({
+    # If no month is selected, an error message is displayed
+    validate(
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
+    )
+    
+    name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
+    
+    return(sprintf("You've chosen %s, check out these tips:", name_month))
+  })
+  
   # Precipitation Advice
   output$precipAdvice <- renderText({
     # If no month is selected, an error message is displayed
@@ -734,7 +769,7 @@ server <- function(input, output, session) {
   output$windAdvice <- renderText({
     # If no month is selected, an error message is displayed
     validate(
-      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "Please select a month")
+      need(input$tableauViz_weather_mark_selection_changed$MONTH[1], "")
     )
     name_month <- month.name[input$tableauViz_weather_mark_selection_changed$MONTH[1]]
     
