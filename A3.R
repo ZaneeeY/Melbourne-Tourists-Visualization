@@ -96,15 +96,15 @@ tour_tab <- tabPanel(
     ),
     fluidRow(
       style = "margin-left: 10%; margin-right: 10%;",
-      h3("Tour Spots Location and Popularity"),
+      h3("Tour Spots Location and Popularity")
     ),
     div(style = "margin-left: 10%; margin-right: 10%;",
       sidebarLayout(
         
         sidebarPanel(
           radioButtons("price_filter", "Price Filter", 
-                       choices = c("All" = 2, "Free" = 0, "Non-Free" = 1),
-                       selected = 2),
+                             choices = c("All" = 2, "Free" = 0, "Non-Free" = 1),
+                             selected = 2),
           HTML(
             "<h4>Instruction of the usage</h4>
             <P>In the area below, you can explore the locations of various tourist attractions on the map by selecting different markers. By clicking on these markers, you can access an information popup that provides you with everything you need to know about that attraction. This includes the attraction's name, pricing, rating, type, and a brief description for your reference. Additionally, below this section, there is a foot traffic chart that appears based on the attraction you click on. This foot traffic chart can inform you about the attraction's visitor patterns over a week, showing the hourly visitor flow. This helps you plan your visit more efficiently. In this panel, there is also a price filter, which allows you to quickly filter attractions on the map between paid and free ones, making it easier for budget-conscious travelers to adapt to changes in their journey.</p>"
