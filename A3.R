@@ -11,12 +11,42 @@ source('source/tableau-in-shiny-v1.0.R')
 ## Home
 home_tab <- tabPanel(
   title='Home',
-  h2('h2'),
-  mainPanel(
-    actionButton("btn_tour", "Go to Tour Spots"),
-    actionButton("btn_restaurant", "Go to Restaurants"),
-    actionButton("btn_weather", "Go to Weather"),
-    uiOutput('plot_home')
+  fluidPage(
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%; ",
+      h1(style = "display: flex; justify-content: center;", 'Welcome to Melbourne'),
+      p('Melbourne, the vibrant capital of Victoria, effortlessly merges modernity with heritage. Its diverse tapestry of attractions ranges from the lush Royal Botanic Gardens to the iconic Melbourne Cricket Ground. The city’s laneways, adorned with dynamic street art, house indie boutiques and renowned coffee shops. Melbourne\'s food scene is full of multicultural flavors, where you can taste a variety of cuisines, such as Italian, Chinese and Vietnamese. However, when packing, be prepared for its unpredictable "four seasons in one day" weather.')
+    ),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
+      column(4,
+         HTML(
+           "<img src='https://images.pexels.com/photos/6998684/pexels-photo-6998684.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='Custom Image' width='420' height='280' />
+           <br>
+            "
+         ),
+         br(),
+         actionButton("btn_tour", "Explore Tour Spots")
+      ),
+      column(4,
+             HTML(
+               "<img src='https://images.pexels.com/photos/1310777/pexels-photo-1310777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='Custom Image' width='420' height='280' />
+               <br>
+                "
+             ),
+             br(),
+             actionButton("btn_restaurant", "Explore Restaurants")
+      ),
+      column(4,
+             HTML(
+               "<img src='https://images.pexels.com/photos/1431822/pexels-photo-1431822.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='Custom Image' width='420' height='280' />
+               <br>
+                "
+             ),
+             br(),
+             actionButton("btn_weather", "Explore Weather")
+      )
+    )
   )
 )
 
@@ -31,27 +61,58 @@ tour_data$Color[tour_data$Price == 0] <- 'red'
 tour_tab <- tabPanel(
   title='Tour Spots',
   fluidPage(
-    sidebarLayout(
-      sidebarPanel(
-        checkboxGroupInput("price_filter", "Price Filter", 
-                           choices = c("Free" = 0, "Non-Free" = 1)),
-        HTML(
-          "<h3>The beauty of Melbourne</h3>
-           <p>Melbourne, Australia, offers a captivating blend of country views, city walks, adventurous experiences, and the beauty of nature. Just a short drive from the bustling city center, you'll find the picturesque Yarra Valley, where rolling vineyards and lush landscapes create a stunning country escape. For those who prefer the urban vibe, Melbourne's city walks are a delight, with vibrant street art, historic architecture, and a thriving café culture that invites exploration. Adventure-seekers can embark on thrilling escapades like hot air ballooning over the Yarra Valley, or they can explore the nearby Great Ocean Road with its iconic Twelve Apostles. And when it's time to reconnect with nature, Melbourne doesn't disappoint. You can discover tranquil parks, gardens, and beaches, or venture into the nearby Dandenong Ranges for serene rainforest hikes. Melbourne truly offers something for every traveler's taste, making it a city of diverse and exciting experiences.</p>
-           <img src='https://fletchers.net.au/_files/blog/whats-on-in-melbourne.jpg' alt='Custom Image' width='300' height='180' />
-           <p></p>
-           <img src='https://www.tripsavvy.com/thmb/EMZFJmSQwhPKMYjJao-PABUjbJs=/5387x3381/filters:no_upscale():max_bytes(150000):strip_icc()/IMG_7081-2-8ca655d68c9c42cbbfda9e5896d2839a.jpg' alt='Custom Image' width='300' height='180' />
-           <p></p>
-           <img src='https://cdn.concreteplayground.com/content/uploads/2016/07/Dandenong-Ranges-Flickr-Adrian-Mohedano.jpeg' alt='Custom Image' width='300' height='180' />
-          "
-        )
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
+      h2(style = "display: flex; justify-content: center;", 'Tours Spots in Melbourne'),
+      p('Melbourne, Australia, offers a captivating blend of country views, city walks, adventurous experiences, and the beauty of nature. Just a short drive from the bustling city center, you\'ll find the picturesque Yarra Valley, where rolling vineyards and lush landscapes create a stunning country escape. For those who prefer the urban vibe, Melbourne\'s city walks are a delight, with vibrant street art, historic architecture, and a thriving café culture that invites exploration. Adventure-seekers can embark on thrilling escapades like hot air ballooning over the Yarra Valley, or they can explore the nearby Great Ocean Road with its iconic Twelve Apostles. And when it\'s time to reconnect with nature, Melbourne doesn\'t disappoint. You can discover tranquil parks, gardens, and beaches, or venture into the nearby Dandenong Ranges for serene rainforest hikes. Melbourne truly offers something for every traveler\'s taste, making it a city of diverse and exciting experiences.'),
+    ),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
+      column(4,
+             HTML(
+               "<img src='https://www.tripsavvy.com/thmb/EMZFJmSQwhPKMYjJao-PABUjbJs=/5387x3381/filters:no_upscale():max_bytes(150000):strip_icc()/IMG_7081-2-8ca655d68c9c42cbbfda9e5896d2839a.jpg' alt='Custom Image' width='370' height='260' />
+               <br>
+                "
+              ),
+             br(),
       ),
-      mainPanel(
-        leafletOutput('map_tour', height = "600"),
-        tableauPublicViz(
-          id='tableauViz_tour',
-          url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
-          height="150px"
+      column(4,
+             HTML(
+               "<img src='https://fletchers.net.au/_files/blog/whats-on-in-melbourne.jpg' alt='Custom Image' width='370' height='260' />
+               <br>
+                "
+             ),
+             br(),
+      ),
+      column(4,
+             HTML(
+               "<img src='https://cdn.concreteplayground.com/content/uploads/2016/07/Dandenong-Ranges-Flickr-Adrian-Mohedano.jpeg' alt='Custom Image' width='370' height='260' />
+               <br>
+                "
+             ),
+             br(),
+      )
+    ),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
+      h3("qwe"),
+      p("ffff")
+    ),
+    div(style = "margin-left: 10%; margin-right: 10%;",
+      sidebarLayout(
+        
+        sidebarPanel(
+          checkboxGroupInput("price_filter", "Price Filter", 
+                             choices = c("Free" = 0, "Non-Free" = 1),
+                             selected = c(0, 1)),
+        ),
+        mainPanel(
+          leafletOutput('map_tour', height = "600"),
+          tableauPublicViz(
+            id='tableauViz_tour',
+            url='https://public.tableau.com/views/Book_16970122966280/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link',
+            height="150px"
+          )
         )
       )
     )
@@ -176,9 +237,15 @@ weather_data <- read.csv("dataset/weather_dataset.csv")
 
 weather_tab <- tabPanel(
   title='Weather',
-  h2('h2'),
+  h2(style = "display: flex; justify-content: center;", 'Weather in Melbourne'),
   fluidPage(
     fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
+      h3("qwe"),
+      p("ffff")
+    ),
+    fluidRow(
+      style = "margin-left: 10%; margin-right: 10%;",
       column(8,
              tableauPublicViz(
                id='tableauViz_weather',
@@ -194,7 +261,6 @@ weather_tab <- tabPanel(
              textOutput("solarAdvice"),
              textOutput("windAdvice")
       )
-      
     )
   )
 )
@@ -225,21 +291,21 @@ server <- function(input, output, session) {
     updateNavbarPage(session, "home_page", selected = "Weather")
   })
   
-  output$plot_home <- renderUI({
-    
-  })
-  
   ## Tour Spots
   # Make tour map
   output$map_tour <- renderLeaflet({
-    
-    filtered_tour_data <- tour_data
+    validate(
+      need(input$price_filter, "Please select a choice")
+    )
     
     if (0 %in% input$price_filter && 1 %in% input$price_filter) {
+      filtered_tour_data <- tour_data
     } else if (0 %in% input$price_filter) {
       filtered_tour_data <- tour_data[tour_data$Price == 0, ]
     } else if (1 %in% input$price_filter) {
       filtered_tour_data <- tour_data[tour_data$Price > 0, ]
+    }else{
+      
     }
     
     leaflet() %>%
@@ -288,7 +354,6 @@ server <- function(input, output, session) {
     
     google_maps_rating_var <- "Rating on Google Maps (0~5)"
     rating_var <- "Rating on Tripadvisor (0~5)"
-    
     
     # Calculate average ratings for every unique cuisine
     for (cuisine in unique_cuisines_list) {
