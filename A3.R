@@ -176,33 +176,32 @@ unique_cuisines_list <- c(unique(split_cuisines))
 
 cuisines_colors <- c(
   "Asian" = "#f28e2b",
-  "Thai" = "#f1ce63",
-  "Vietnamese" = "#b887aa",
-  "Fusion" = "#ff9d9a",
-  "Italian" = "#bab0ac",
-  "Bar" = "#8dbf86",
+  "Thai" = "#b6992d",
+  "Vietnamese" = "#f1ce63",
+  "Fusion" = "#e15759",
+  "Italian" = "#d37295",
+  "Bar" = "#59a14f",
   "Cafe" = "#b6992d",
   "Australian" = "#ffbe7d",
-  "International" = "#d37295",
-  "Pub" = "#4e79a7",
-  "Japanese" = "#b887aa",
-  "Sushi" = "#d9ca92",
-  "Contemporary" = "#86bcb6",
-  "Steakhouse" = "#59a14f",
+  "International" = "#bab0ac",
+  "Pub" = "#d7b5a6",
+  "Japanese" = "#fabfd2",
+  "Sushi" = "#8cd17d",
+  "Steakhouse" = "#ffbe7d",
   "Barbecue" = "#8cd17d",
-  "Indian" = "#fabfd2",
-  "Grill" = "#79706e",
+  "Indian" = "#79706e",
+  "Grill" = "#ff9d9a",
   "American" = "#a0cbe8",
-  "European" = "#e15759",
-  "Pizza" = "#d7b5a6",
-  "Mediterranean" = "#9d7660",
-  "Street Food" = "#8cd17d",
-  "Central American" = "#f2d372",
-  "Southern-Italian" = "#f28f2d",
-  "Sicilian" = "#aad1eb",
+  "European" = "#86bcb6",
+  "Pizza" = "#9d7660",
+  "Mediterranean" = "#d4a6c8",
+  "Street Food" = "#59a14f",
+  "Central American" = "#f1ce63",
+  "Southern-Italian" = "#a0cbe8",
+  "Sicilian" = "#4e79a7",
   "Chinese" = "#499894",
-  "Malaysian" = "#debbd5",
-  "Spanish" = "#ffdfc0"
+  "Malaysian" = "#b07aa1",
+  "Spanish" = "#f28e2b"
 )
 
 restaurant_tab <- tabPanel(
@@ -219,7 +218,7 @@ restaurant_tab <- tabPanel(
         style = "height: 600px; width: 800px; margin-top: 35px;",
         tableauPublicViz(
           id = 'tableauViz_restaurant',
-          url = 'https://public.tableau.com/views/restaurant_word_cloud/Sheet1?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link',
+          url = 'https://public.tableau.com/views/restaurant_word_cloud/wordcloud?:language=zh-CN&publish=yes&:display_count=n&:origin=viz_share_link',
           height = '100%'
         )
       ),
@@ -231,7 +230,7 @@ restaurant_tab <- tabPanel(
     fluidRow(
       style = "margin-left: 10%; margin-right: 10%; margin-top: 18px; ",
       h3("Google Maps Ratings vs. Tripadvisor Ratings"),
-      p("Explore how Melbourne's diverse eateries fare in the eyes of discerning diners from both Google Maps and TripAdvisor. This bar chart provides a comprehensive view, breaking down average ratings by cuisine. Simply hover over each bar to glean specific rating details. If you want to know the ratings of your favorite cuisine, then you can click on the cuisine in the word cloud, after which the chart will highlight that particular dish, making it easy for you to identify it. Navigate this interactive tool and discover how Melbourne's culinary offerings stack up in the world of online reviews.")
+      p("Explore how Melbourne's diverse eateries fare in the eyes of discerning diners from both Google Maps and TripAdvisor. This bar chart provides a comprehensive view, breaking down average ratings by cuisine. Simply hover over each bar to glean specific rating details. If you want to know the ratings of your favorite cuisine, then you can click on the cuisine in the word cloud, after which the chart will highlight that particular dish, making it easy for you to identify it.")
     ),
     fluidRow(
       style = "margin-top: 20px; width: 100%;  display: flex; justify-content: center;",
@@ -256,7 +255,7 @@ restaurant_tab <- tabPanel(
     fluidRow(
       style = "margin-left: 10%;  margin-right: 10%; margin-top: 18px; ",
       h3("Comparison between Restaurants"),
-      p("Dive into the intricacies of Melbourne's restaurant ratings with our versatile treemap. This visualization offers a panoramic view, dissecting ratings based on diverse variables—from overall feedback on TripAdvisor to pricing on Google Maps. Customize your exploration by selecting a specific variable from the dropdown, as depicted in Chart 1. Curious about how a specific cuisine fares across all its eateries? Simply choose it from the word cloud, and the treemap will recalibrate to spotlight those restaurants. For a deeper dive, click on any restaurant block to be redirected to its detailed review on TripAdvisor. Use this comprehensive tool to chart your next dining experience in Melbourne, tailored to your tastes and interests.")
+      p("Dive into the intricacies of Melbourne's restaurant ratings with our versatile treemap. This visualization offers a panoramic view, dissecting ratings based on diverse variables—from overall feedback on TripAdvisor to pricing on Google Maps. Customize your exploration by selecting a specific variable from the dropdown. Curious about how a specific cuisine fares across all its eateries? Simply choose it from the word cloud, and the treemap will recalibrate to spotlight those restaurants. For a deeper dive, click on any restaurant block to be redirected to its detailed information on TripAdvisor. Use this comprehensive tool to chart your next dining experience in Melbourne, tailored to your tastes and interests.")
     ),
     fluidRow(
       style = "margin-left: 9%;  margin-top: 18px; margin-top: 20px;",
