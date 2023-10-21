@@ -174,6 +174,37 @@ x_vars <- setdiff(names(restaurant_data), c("name", "tripadvisor_link", "descrip
 split_cuisines <- unlist(strsplit(restaurant_data[["cuisines"]], ", "))
 unique_cuisines_list <- c(unique(split_cuisines))
 
+cuisines_colors <- c(
+  "Asian" = "#f28e2b",
+  "Thai" = "#f1ce63",
+  "Vietnamese" = "#b887aa",
+  "Fusion" = "#ff9d9a",
+  "Italian" = "#bab0ac",
+  "Bar" = "#8dbf86",
+  "Cafe" = "#b6992d",
+  "Australian" = "#ffbe7d",
+  "International" = "#d37295",
+  "Pub" = "#4e79a7",
+  "Japanese" = "#b887aa",
+  "Sushi" = "#d9ca92",
+  "Contemporary" = "#86bcb6",
+  "Steakhouse" = "#59a14f",
+  "Barbecue" = "#8cd17d",
+  "Indian" = "#fabfd2",
+  "Grill" = "#79706e",
+  "American" = "#a0cbe8",
+  "European" = "#e15759",
+  "Pizza" = "#d7b5a6",
+  "Mediterranean" = "#9d7660",
+  "Street Food" = "#8cd17d",
+  "Central American" = "#f2d372",
+  "Southern-Italian" = "#f28f2d",
+  "Sicilian" = "#aad1eb",
+  "Chinese" = "#499894",
+  "Malaysian" = "#debbd5",
+  "Spanish" = "#ffdfc0"
+)
+
 restaurant_tab <- tabPanel(
   title='Restaurants',
   h2(style = "display: flex; justify-content: center;", 'Restaurants in Melbourne'),
@@ -303,6 +334,11 @@ weather_tab <- tabPanel(
              ),
              tags$br()
       ),
+    ),
+    fluidRow(
+      box(title = "Scoring Criteria", width = 12,
+          tableOutput("scoringTable")
+      )
     )
     
   )
@@ -436,7 +472,7 @@ server <- function(input, output, session) {
     }
     
     # filter relevant columns
-    filtered_data[, c("name", "Rating on Google Maps (0~5)", "Rating on Tripadvisor (0~5)", "tripadvisor_link", input$xcol, "cuisines", "Food Rating on Tripadvisor (0~5)", "Service Rating on Tripadvisor (0~5)", "Value Rating on Tripadvisor (0~5)", "Atmosphere Rating on Tripadvisor (0~5)")]
+    filtered_data[, c("name", "tripadvisor_link", input$xcol, "cuisines", "Food Rating on Tripadvisor (0~5)", "Service Rating on Tripadvisor (0~5)", "Value Rating on Tripadvisor (0~5)", "Atmosphere Rating on Tripadvisor (0~5)")]
   })
   
   output$bar_chart_ratings <- renderHighchart({
@@ -506,10 +542,10 @@ server <- function(input, output, session) {
   })
   
   output$radar_chart_restaurant <- renderHighchart({
-    food_rating_var <- names(selected_restaurant_data())[7]
-    service_rating_var <- names(selected_restaurant_data())[8]
-    value_rating_var <- names(selected_restaurant_data())[9]
-    atmosphere_rating_var <- names(selected_restaurant_data())[10]
+    food_rating_var <- names(selected_restaurant_data())[5]
+    service_rating_var <- names(selected_restaurant_data())[6]
+    value_rating_var <- names(selected_restaurant_data())[7]
+    atmosphere_rating_var <- names(selected_restaurant_data())[8]
     
     # Preparing data
     compute_cuisine_means <- function(cuisine) {
@@ -551,20 +587,22 @@ server <- function(input, output, session) {
           list(
             name = series_name,
             data = as.numeric(radar_data[i, ]),
-            pointPlacement = 'on'
+            pointPlacement = 'on',
+            color = cuisines_colors[[series_name]]
           )
         })
       )
     
     return(hc)
   })
+
   
   output$plot_tree_map_restaurant <- renderHighchart({
     name_var <- names(selected_restaurant_data())[1]
-    google_maps_rating_var <- names(selected_restaurant_data())[2]
-    tripadvisor_link_var <- names(selected_restaurant_data())[4]
-    x_var <- names(selected_restaurant_data())[5]
-    cuisines_var <- names(selected_restaurant_data())[6]
+
+    tripadvisor_link_var <- names(selected_restaurant_data())[2]
+    x_var <- names(selected_restaurant_data())[3]
+    cuisines_var <- names(selected_restaurant_data())[4]
     
     hchart(selected_restaurant_data(), "treemap", hcaes(
       name = !!sym(name_var), 
@@ -574,8 +612,7 @@ server <- function(input, output, session) {
     )) %>% 
       hc_tooltip(pointFormat = paste(
         "{point.name}<br>",
-        "Tripadvisor Rating: {point.value}<br>",
-        sprintf("Google Maps Rating: {point.%s}<br>", google_maps_rating_var),
+        x_var, ": {point.value}<br>",
         sprintf("Cuisines: {point.%s}<br>", cuisines_var),
         "Click for more details on Tripadvisor"
       )) %>%
@@ -783,6 +820,15 @@ server <- function(input, output, session) {
     } else {
       return("💨 Strong wind, be cautious!")
     }
+  })
+  output$scoringTable <- renderTable({
+    data.frame(
+      Parameter = c("Precipitation", "Temperature (Max)", "Temperature (Min)", "Sun Exposure", "Wind Speed"),
+      `10 Points` = c("<10mm", ">20 & <=25°C", ">15 & <=20°C", ">=20 MJ/m^2", "<400 km"),
+      `8 Points` = c(">=10 & <50mm", ">25 & <=30°C", ">10 & <=15°C", ">=15 & <20 MJ/m^2", ">=400 & <450 km"),
+      `6 Points` = c(">=50 & <100mm", ">30 & <=35°C", ">5 & <=10°C", ">=10 & <15 MJ/m^2", ">=450 & <500 km"),
+      `4 Points` = c(">=100mm", "Others", "Others", "<10 MJ/m^2", ">=500 km")
+    )
   })
   
   

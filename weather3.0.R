@@ -2,7 +2,7 @@ library(shiny)
 library(shinydashboard)
 
 # Read the data
-df <- read.csv("dataset/weather_dataset.csv")
+df <- read.csv("weather_dataset - Sheet1 (1).csv")
 ui <- dashboardPage(
   dashboardHeader(title = "Weather Analysis"),
   dashboardSidebar(
@@ -30,9 +30,15 @@ ui <- dashboardPage(
           textOutput("solarAdvice"),
           textOutput("windAdvice")
       )
+    ),
+    fluidRow(
+      box(title = "Scoring Criteria", width = 12,
+          tableOutput("scoringTable")
+      )
     )
   )
 )
+
 server <- function(input, output) {
   
   output$avgTotalScore <- renderText({
@@ -163,7 +169,15 @@ server <- function(input, output) {
       return("💨 Strong wind, be cautious!")
     }
   })
-  
+  output$scoringTable <- renderTable({
+    data.frame(
+      Parameter = c("Precipitation", "Temperature (Max)", "Temperature (Min)", "Sun Exposure", "Wind Speed"),
+      `10 Points` = c("<10mm", ">20 & <=25°C", ">15 & <=20°C", ">=20 MJ/m^2", "<400 km"),
+      `8 Points` = c(">=10 & <50mm", ">25 & <=30°C", ">10 & <=15°C", ">=15 & <20 MJ/m^2", ">=400 & <450 km"),
+      `6 Points` = c(">=50 & <100mm", ">30 & <=35°C", ">5 & <=10°C", ">=10 & <15 MJ/m^2", ">=450 & <500 km"),
+      `4 Points` = c(">=100mm", "Others", "Others", "<10 MJ/m^2", ">=500 km")
+    )
+  })
 }
 
 
