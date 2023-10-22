@@ -280,7 +280,7 @@ weather_tab <- tabPanel(
     fluidRow(
      
       p('Melbourne, located in the southeast of Australia, is the capital of Victoria State. The city is famous for its changeable weather, often described as "four seasons in one day”. Melbourne\'s weather can be very volatile, so we scored the data based on historical data from 2020 to 2022 and advised visitors to prepare a variety of clothing for possible weather changes.'),
-      h3("Title"),
+      h3("How to use"),
       p('Clicking on "Avg. Mean maximun tempture" or "Month" at the bottom will show you the weather scores, the higher the score the better for traveling.')
     ),
     fluidRow(
